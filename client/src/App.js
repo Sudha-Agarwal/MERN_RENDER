@@ -20,11 +20,16 @@ function App() {
         },
         body: JSON.stringify({ text: newTaskText }),
       })
-        .then((response) => response.json())
+        .then((response) => response.text())
+        .then((data) => {
+          console.log("Raw data: " + data);
+          return JSON.parse(data);
+        })
         .then((data) => {
           setTasks([...tasks, data]);
           setNewTaskText('');
-        });
+        })
+        .catch((error) => console.log(error));
     }
   };
 

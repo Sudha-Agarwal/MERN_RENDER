@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const path = require('path');
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://sudhamangla:5VBidwMlAY5hBrux@cluster0.mgrqz5r.mongodb.net/mern_todo', {
@@ -15,6 +16,13 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
+// Serve static files from the build directory
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Handle requests to the root URL
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 // Event listener for connection error event
 db.on('error', (error) => {
   console.error('MongoDB connection error:', error);
